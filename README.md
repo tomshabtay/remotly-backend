@@ -15,7 +15,7 @@
 4. Run: docker build -t remotly-java .
 5. Run: docker run -p 4567:4567 remotly-java
 
-Shutdown:
+### Shutdown: ###
 6. Run: docker ps
 7. Find the remotly-java container id
 8. Run: docker stop <id-from-step-7>
