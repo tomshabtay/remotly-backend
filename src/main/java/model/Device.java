@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import ssh.SSHManager;
 
@@ -13,14 +14,24 @@ public class Device implements Serializable {
 	public String username;
 	public String password;
 	public boolean isCentos = true;
+	ArrayList<Pack> packages;
 	
 	
 	
+	public ArrayList<Pack> getPackages() {
+		return packages;
+	}
+
+	public void setPackages(ArrayList<Pack> packages) {
+		this.packages = packages;
+	}
+
 	public SSHManager ssh_manager;
 	
 	boolean connected;
 	
 	public Device(String name, String ip, String username, String password){
+		packages = new ArrayList<Pack>();
 		isCentos = true;
 		this.name = name;
 		this.ip = ip;
@@ -53,9 +64,31 @@ public class Device implements Serializable {
 		return output;
 	}
 	
-	public void updatePackage(String pack)//TODO
+	public void updatePackage(String pack)
 	{
+		connect();
+		String response;
 		
+		if(this.isCentos)
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.append("yum update ");
+			sb.append(pack);
+			response = ssh_manager.sendCommand(sb.toString());
+			System.out.println("Device " + name + " :\n" + response);
+			response = ssh_manager.sendCommand("yum update dbus");
+			System.out.println("Device " + name + " :\n" + response);
+
+		}
+		else
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.append("apt-get ");
+			sb.append(pack);
+			response = ssh_manager.sendCommand(sb.toString());
+			System.out.println("Device " + name + " :\n" + response);
+		}
+		disconnect();
 	}
 
 	

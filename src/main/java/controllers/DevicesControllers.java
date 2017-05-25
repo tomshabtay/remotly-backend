@@ -22,10 +22,10 @@ public class DevicesControllers {
 		Server.device_manager.addDevice(map.get("name"), map.get("ip"), map.get("username"), map.get("password"));
 		Device d = Server.device_manager.getDevice(map.get("name"));
 		if(d != null){
-			return "Added Device:" + d.name + "\n" + d.ip + "\n" + d.username + "\n" + d.password;
+			return "success";
 		}
 		else{
-			return "problem";
+			return "fail";
 		}
 	};
 	

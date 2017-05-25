@@ -36,6 +36,7 @@ public class Server {
 
 		// SSH
 		get("ssh/:name/listpack", SSHControllers.listPackages);
+		get("ssh/:name/updatepack/:pack", SSHControllers.updatePackage);
 		get("ssh/test/:name", SSHControllers.sshTest);
 		get("ssh/do/:name/:command", SSHControllers.sshRunCommand);
 		// get("ssh/ses-start/:name/:", SSHControllers.sshRunCommand);
