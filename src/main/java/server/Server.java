@@ -1,6 +1,7 @@
 package server;
 
 import static spark.Spark.*;
+import static spark.SparkBase.stop;
 
 import java.rmi.server.ServerCloneException;
 
@@ -31,8 +32,10 @@ public class Server {
 		get("devices/add/:query", DevicesControllers.addDevice);
 		get("devices/list", DevicesControllers.listDevices);
 		get("devices/delete-all", DevicesControllers.deleteAllDevices);
+		
 
 		// SSH
+		get("ssh/:name/listpack", SSHControllers.listPackages);
 		get("ssh/test/:name", SSHControllers.sshTest);
 		get("ssh/do/:name/:command", SSHControllers.sshRunCommand);
 		// get("ssh/ses-start/:name/:", SSHControllers.sshRunCommand);
@@ -42,5 +45,11 @@ public class Server {
 		get("/", ServerControllers.index);
 
 	}
+	
+	public static void stopServer() 
+	{
+		stop();
+	}
+	
 
 }

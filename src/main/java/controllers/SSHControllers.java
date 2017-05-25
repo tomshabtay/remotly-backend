@@ -27,4 +27,14 @@ public class SSHControllers {
 
 	};
 
+	public static Route listPackages= (Request request, Response response) -> {
+		String res;
+		Device d = Server.device_manager.getDevice(request.params(":name"));
+		if(d.isCentos)
+		{
+			res = d.sendCommand2("rpm -qa");
+			return res;
+		}
+		return "Run Command";
+	};
 }

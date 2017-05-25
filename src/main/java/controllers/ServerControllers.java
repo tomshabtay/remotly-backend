@@ -1,8 +1,9 @@
 package controllers;
 
-import static spark.Spark.stop;
+import static spark.Spark.stop;//TODO delete this
 
 import model.DeviceManager;
+import server.Server;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -20,15 +21,11 @@ public class ServerControllers {
 
 	//Stop route
 	public static Route stopServer = (Request request, Response response) -> {
-		stopServer();
+		Server.stopServer();
 		return "Server Stoped";
 	};
 	
 
-	
-	public static void stopServer() {
-		stop();
-	}
-	
+
 
 }

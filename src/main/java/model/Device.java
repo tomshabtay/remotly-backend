@@ -12,12 +12,16 @@ public class Device implements Serializable {
 	public String ip;
 	public String username;
 	public String password;
+	public boolean isCentos = true;
+	
+	
 	
 	public SSHManager ssh_manager;
 	
 	boolean connected;
 	
 	public Device(String name, String ip, String username, String password){
+		isCentos = true;
 		this.name = name;
 		this.ip = ip;
 		this.password = password;
@@ -39,6 +43,22 @@ public class Device implements Serializable {
 		disconnect();
 		
 	}
+	public String sendCommand2(String command){
+		if(!connected) {
+			connect();
+		}
+		String output = ssh_manager.sendCommand(command);
+		//System.out.println("Device " + name + " :\n" + output);
+		disconnect();
+		return output;
+	}
+	
+	public void updatePackage(String pack)//TODO
+	{
+		
+	}
+
+	
 	
 	
 	

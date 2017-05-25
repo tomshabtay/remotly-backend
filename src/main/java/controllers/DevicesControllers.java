@@ -43,7 +43,7 @@ public class DevicesControllers {
 	        str.append(count + ". " + "Name: " + d.name + " Ip: " + d.ip + "\n");
 	        
 	        count++;
-	        it.remove(); // avoids a ConcurrentModificationException
+//	        it.remove(); // avoids a ConcurrentModificationException
 	    }
 	    
 	    return str.toString();
