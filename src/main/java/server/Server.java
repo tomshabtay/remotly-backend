@@ -31,9 +31,10 @@ public class Server {
 		get("devices/add/:query", DevicesControllers.addDevice);
 		get("devices/list", DevicesControllers.listDevices);
 		get("devices/delete-all", DevicesControllers.deleteAllDevices);
+		get("devices/:name/details", DevicesControllers.deviceDetails);
 		
 
-		// SSH
+		// SSH1
 		get("ssh/:name/listpack", SSHControllers.listPackages);
 		get("ssh/:name/updatepack/:pack", SSHControllers.updatePackage);
 		get("ssh/test/:name", SSHControllers.sshTest);
