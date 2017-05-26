@@ -18,11 +18,10 @@ import ssh.SSHManager;
 public class Server {
 
 	// The Model
-	public static DeviceManager device_manager;
+	public static DeviceManager device_manager = new DeviceManager();
 
 	// Constructor
 	public Server() {
-		device_manager = new DeviceManager();
 		setRoutes();
 	}
 

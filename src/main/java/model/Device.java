@@ -5,16 +5,21 @@ import java.util.ArrayList;
 
 import ssh.SSHManager;
 
-public class Device implements Serializable {
+public class Device {
 
-	private static final long serialVersionUID = 1L;
+//	private static final long serialVersionUID = 1L;
 	
 	public String name;
 	public String ip;
+
+
 	public String username;
 	public String password;
 	public boolean isCentos = true;
 	ArrayList<Pack> packages;
+	
+	public transient SSHManager ssh_manager;
+	boolean connected;
 	
 	
 	
@@ -26,9 +31,7 @@ public class Device implements Serializable {
 		this.packages = packages;
 	}
 
-	public SSHManager ssh_manager;
-	
-	boolean connected;
+
 	
 	public Device(String name, String ip, String username, String password){
 		packages = new ArrayList<Pack>();
@@ -107,6 +110,61 @@ public class Device implements Serializable {
 	public void disconnect(){
 		ssh_manager.close();
 		connected = false;
+	}
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public boolean isCentos() {
+		return isCentos;
+	}
+
+	public void setCentos(boolean isCentos) {
+		this.isCentos = isCentos;
+	}
+
+	public SSHManager getSsh_manager() {
+		return ssh_manager;
+	}
+
+	public void setSsh_manager(SSHManager ssh_manager) {
+		this.ssh_manager = ssh_manager;
+	}
+
+	public boolean isConnected() {
+		return connected;
+	}
+
+	public void setConnected(boolean connected) {
+		this.connected = connected;
 	}
 	
 }
