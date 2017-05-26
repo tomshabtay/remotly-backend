@@ -51,7 +51,7 @@ public class DevicesControllers {
 //		int count = 1;
 		
 	    Iterator it = Server.device_manager.devices_map.entrySet().iterator();
-	    while (it.hasNext()) {
+//	    while (it.hasNext()) {
 //	        Map.Entry pair = (Map.Entry)it.next();
 //	        Device d = (Device) pair.getValue();
 //	        devices.add(d);
@@ -60,7 +60,7 @@ public class DevicesControllers {
 	        
 //	        count++;
 //	        it.remove(); // avoids a ConcurrentModificationException
-	    }
+//	    }
 		String jsonInString = gson.toJson(Server.device_manager.devices_map);
 		
 	    response.type("application/json");
