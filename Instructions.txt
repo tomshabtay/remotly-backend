@@ -1,0 +1,2 @@
+Server urls:
+http://localhost:4567/devices/add/name=50centos&password=a&ip=10.0.0.29&username=root

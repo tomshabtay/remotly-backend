@@ -182,6 +182,7 @@ public class Device {
 			verList = sendCommand2("yum list installed | awk {' print $2 '}");
 			splitNameList = nameList.split("\n");
 			splitVerList = verList.split("\n");
+			this.packages.clear();
 			for (int i = 2; i < splitNameList.length; i++) { // for starts at 2 because there are 2 bad lines
 				
 				Pack pack = new Pack(splitNameList[i],splitVerList[i]);
@@ -192,6 +193,11 @@ public class Device {
 			System.out.println("Obtaining " + splitNameList.length + " packages for device:" + name);
 
 		}
+		
+	}
+
+	public void removeAllPacksDetails() {
+		packages = new ArrayList<Pack>();
 		
 	}
 	

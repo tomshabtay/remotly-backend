@@ -24,8 +24,9 @@ public class SSHControllers {
 	
 	public static Route sshRunCommand = (Request request, Response response) -> {
 		Device d = Server.device_manager.getDevice(request.params(":name"));
-		d.sendCommand(request.params(":command"));
-		return "Run Command";
+		String str = d.sendCommand2(request.params(":command"));
+		System.out.println(str);
+		return str;
 		
 
 	};
@@ -45,11 +46,14 @@ public class SSHControllers {
 			verList = d.sendCommand2("yum list installed | awk {' print $2 '}");
 			splitNameList = nameList.split("\n");
 			splitVerList = verList.split("\n");
+			d.removeAllPacksDetails();
 			for (int i = 2; i < splitNameList.length; i++) { // for starts at 2 because there are 2 bad lines
 				
 				Pack pack = new Pack(splitNameList[i],splitVerList[i]);
 				//System.out.println("name" + i + ": " + splitNameList[i] + ", " +  splitVerList[i]);
+
 				d.getPackages().add(pack);
+
 				
 			}
 			System.out.println("Obtaining " + splitNameList.length + " packages for device:" + d.name);

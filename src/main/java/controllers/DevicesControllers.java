@@ -42,29 +42,10 @@ public class DevicesControllers {
 		
 		Gson gson = new Gson();
 
-  		
- 
-		 //2. Java object to JSON, and assign to a String
-
-		
-		StringBuilder str = new StringBuilder();
-//		int count = 1;
-		
-	    Iterator it = Server.device_manager.devices_map.entrySet().iterator();
-//	    while (it.hasNext()) {
-//	        Map.Entry pair = (Map.Entry)it.next();
-//	        Device d = (Device) pair.getValue();
-//	        devices.add(d);
-//	        str.append(count + ". " + "Name: " + d.name + " Ip: " + d.ip + "\n");
-//	        System.out.println(count + ". " + "Name: " + d.name + " Ip: " + d.ip + "\n");
-	        
-//	        count++;
-//	        it.remove(); // avoids a ConcurrentModificationException
-//	    }
 		String jsonInString = gson.toJson(Server.device_manager.devices_map);
 		
 	    response.type("application/json");
-	    //return str.toString();
+	    System.out.println(jsonInString);
 		return jsonInString;
 	    
 	};

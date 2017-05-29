@@ -32,6 +32,19 @@ public class Pack {
 	{
 		this.ver = ver;
 	}
+	
+
+	@Override
+	public boolean equals(Object obj) {
+		//TODO check ver too
+		
+		Pack p = (Pack) obj;
+		System.out.println(this.name + " " + p.name);
+		if(this.name == p.name){
+			return true;
+		}
+		return false;
+	}
 
 	
 	
