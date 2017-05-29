@@ -45,6 +45,9 @@ public class DeviceManager {
 		d3.packages.add(pack2);
 		d3.packages.add(pack);
 		d3.packages.add(pack4);
+		d1.setCentos(true);
+		d2.setCentos(false);
+		d3.setCentos(false);
 		
 		devices_map.put(d1.name, d1);
 		devices_map.put(d2.name, d2);

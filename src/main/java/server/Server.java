@@ -30,13 +30,18 @@ public class Server {
 		// Devices Managment
 		get("devices/add/:query", DevicesControllers.addDevice);
 		get("devices/list", DevicesControllers.listDevices);
+		get("devices/:name/delete",DevicesControllers.deleteDevice);
 		get("devices/delete-all", DevicesControllers.deleteAllDevices);
 		get("devices/:name/details", DevicesControllers.deviceDetails);
 		
 
 		// SSH1
 		get("ssh/:name/listpack", SSHControllers.listPackages);
-		get("ssh/:name/updatepack/:pack", SSHControllers.updatePackage);
+		get("ssh/:name/updateall", SSHControllers.updateAll);
+		get("ssh/:name/remove/:pack", SSHControllers.removePack);
+		get("ssh/:name/install/:pack", SSHControllers.installPack);
+
+		get("ssh/:name/update/:pack", SSHControllers.updatePackage);
 		get("ssh/test/:name", SSHControllers.sshTest);
 		get("ssh/do/:name/:command", SSHControllers.sshRunCommand);
 		// get("ssh/ses-start/:name/:", SSHControllers.sshRunCommand);

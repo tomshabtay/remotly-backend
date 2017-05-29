@@ -1,5 +1,7 @@
 package controllers;
 
+import org.w3c.dom.NameList;
+
 import model.Device;
 import model.Pack;
 import server.Server;
@@ -30,42 +32,28 @@ public class SSHControllers {
 
 	public static Route listPackages= (Request request, Response response) -> {
 		int place = -1;
-		String list;
-		String[] brokenList;
+		String nameList;
+		String verList;
+		
+		String[] splitVerList;
+		String[] splitNameList;
 		Device d = Server.device_manager.getDevice(request.params(":name"));
 		if(d.isCentos)
 		{
-			list = d.sendCommand2("rpm -qa");
-			brokenList = list.split("64");
-			int finalPlace = -1;
-			boolean isFound = false;
-			for (int i = 0; i < brokenList.length; i++) {
-				String str = brokenList[i];
-//				String[] brokenPack = str.split("-");
-				for(int j = 0; j<10; j++)
-				{
-					place = str.indexOf('-' + String.valueOf(j));
-					if(place != -1 && !(isFound))
-					{
-						finalPlace = place;
-						isFound = true;
-					}
-					
-				}
-				isFound = false;
-				System.out.println("Place is:" + finalPlace);
-				String name = str.substring(0, finalPlace);
-				System.out.println(name);
-				String ver = str.substring(finalPlace+1, str.length());
-				Pack pack = new Pack(name,ver);
+			
+			nameList = d.sendCommand2("yum list installed | awk {' print $1 '}");
+			verList = d.sendCommand2("yum list installed | awk {' print $2 '}");
+			splitNameList = nameList.split("\n");
+			splitVerList = verList.split("\n");
+			for (int i = 2; i < splitNameList.length; i++) { // for starts at 2 because there are 2 bad lines
+				
+				Pack pack = new Pack(splitNameList[i],splitVerList[i]);
+				//System.out.println("name" + i + ": " + splitNameList[i] + ", " +  splitVerList[i]);
 				d.getPackages().add(pack);
+				
 			}
-			//testing
-			System.out.println("testing");
-			for (int i = 0; i <d.getPackages().size(); i++) {
-				System.out.println("Device " + d.name + " :\n" +"name:" + d.getPackages().get(i).getName() + " \n");
-				//System.out.println("version " + d.getPackages().get(i).getVer());
-			}
+			System.out.println("Obtaining " + splitNameList.length + " packages for device:" + d.name);
+
 		}
 		
 
@@ -74,11 +62,70 @@ public class SSHControllers {
 
 	public static Route updatePackage= (Request request, Response response) -> {
 		Device d = Server.device_manager.getDevice(request.params(":name"));
+		String str = request.params(":pack");
+		String res;
 		if(d.isCentos)
 		{
-			d.updatePackage(request.params(":pack"));
+			//d.updatePackage(str);
+			res = d.sendCommand2("yum update " + str +" -y");
 		}
-		return "Run Command";
+		else
+		{
+			res = d.sendCommand2("apt-get upgrade " + str + " -y");
+		}
+		return res;
 	};
+
+	public static Route updateAll= (Request request, Response response) -> {
+		Device d = Server.device_manager.getDevice(request.params(":name"));
+		String str;
+		if(d.isCentos)
+		{
+			str = d.sendCommand2("yum update" + " -y");
+		}
+		else
+		{
+			str = d.sendCommand2("apt-get upgrade" + " -y");
+		}
+		//return "Run Command";
+		return str;
+	};
+
+	public static Route removePack= (Request request, Response response) -> {
+		String packName;
+		Device d = Server.device_manager.getDevice(request.params(":name"));
+		packName = request.params(":pack");
+		String str;
+		if(d.isCentos)
+		{
+			str = d.sendCommand2("yum remove " + packName + " -y");
+		}
+		else
+		{
+			str = d.sendCommand2("apt-get purge " + packName + " -y");
+		}
+		
+		//return "Run Command";
+		return str;
+	};
+
+	public static Route installPack= (Request request, Response response) -> {
+		String packName;
+		Device d = Server.device_manager.getDevice(request.params(":name"));
+		packName = request.params(":pack");
+		String str;
+		if(d.isCentos)
+		{
+			str = d.sendCommand2("yum install " + packName + " -y");
+		}
+		else
+		{
+			str = d.sendCommand2("apt-get install " + packName + " -y");
+		}
+		
+		//return "Run Command";
+		return str;
+	};
+	
 
 }

@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import server.Server;
 import ssh.SSHManager;
 
 public class Device {
@@ -57,7 +58,7 @@ public class Device {
 		disconnect();
 		
 	}
-	public String sendCommand2(String command){
+	public String sendCommand2(String command){ // HERE TO RETURN THE STRING
 		if(!connected) {
 			connect();
 		}
@@ -165,6 +166,33 @@ public class Device {
 
 	public void setConnected(boolean connected) {
 		this.connected = connected;
+	}
+
+	public void updatePackagesList() {
+		String nameList;
+		String verList;
+		
+		String[] splitVerList;
+		String[] splitNameList;
+		
+		if(isCentos)
+		{
+			
+			nameList = sendCommand2("yum list installed | awk {' print $1 '}");
+			verList = sendCommand2("yum list installed | awk {' print $2 '}");
+			splitNameList = nameList.split("\n");
+			splitVerList = verList.split("\n");
+			for (int i = 2; i < splitNameList.length; i++) { // for starts at 2 because there are 2 bad lines
+				
+				Pack pack = new Pack(splitNameList[i],splitVerList[i]);
+				//System.out.println("name" + i + ": " + splitNameList[i] + ", " +  splitVerList[i]);
+				packages.add(pack);
+				
+			}
+			System.out.println("Obtaining " + splitNameList.length + " packages for device:" + name);
+
+		}
+		
 	}
 	
 }

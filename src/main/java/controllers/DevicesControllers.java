@@ -80,15 +80,32 @@ public class DevicesControllers {
 
 	public static Route deviceDetails = (Request request, Response response) -> {
 		
+		
 		Gson gson = new Gson();
 		
 		String name = request.params(":name");
-
+		Device d = Server.device_manager.devices_map.get(name);
+		d.updatePackagesList();
 		String jsonInString = gson.toJson(Server.device_manager.devices_map.get(name));
+		
 		
 	    response.type("application/json");
 		return jsonInString;
 	    
+	};
+
+
+	public static Route deleteDevice= (Request request, Response response) -> {
+		
+//		Gson gson = new Gson();
+//		
+		String name = request.params(":name");
+
+		
+		Server.device_manager.devices_map.remove(name);
+		
+		return "success";
+		
 	};
 
 
