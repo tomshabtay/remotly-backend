@@ -43,6 +43,9 @@ public class DevicesControllers {
 	//List all available devices
 	public static Route listDevices = (Request request, Response response) -> {
 		
+		
+		
+		
 		Gson gson = new Gson();
 		String jsonInString = gson.toJson(Server.device_manager.devices_map);
 	    response.type("application/json");

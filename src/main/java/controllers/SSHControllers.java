@@ -1,8 +1,13 @@
 package controllers;
 
+import java.util.Iterator;
+import java.util.Map;
+
+import org.glassfish.grizzly.utils.Pair;
 import org.w3c.dom.NameList;
 
 import model.Device;
+import model.DeviceManager;
 import model.Pack;
 import server.Server;
 import slack.SlackBot;
@@ -127,7 +132,7 @@ public class SSHControllers {
 		{
 			str = d.sendCommand2("apt-get purge " + packName + " -y");
 		}
-		
+
 		SlackBot.sendMsg("Command: remove pack "+ request.params(":pack") + "\n" +
 				"Device: " + request.params(":name") + "\n" +
 				"Output: " + str.substring(str.length() < msg_len ? 0 : str.length() - msg_len, str.length()) + "\n"
@@ -160,6 +165,142 @@ public class SSHControllers {
 		//return "Run Command";
 		return str;
 	};
-	
+
+	public static Route installAllPacks= (Request request, Response response) -> {
+		Device d;
+	    Iterator it =  Server.device_manager.devices_map.entrySet().iterator();
+	    boolean[] results = new boolean[Server.device_manager.devices_map.size()];
+	    String str = "";
+	    int i = 0;
+	    while (it.hasNext()) {
+	        Map.Entry pair = (Map.Entry)it.next();
+	        d = Server.device_manager.devices_map.get(pair.getKey());
+	        if(d.isCentos)
+	        {
+				str = d.sendCommand2("yum update" + " -y");
+				SlackBot.sendMsg("Command: update all packages " + "\n" +
+				"Device: " + d.getName() + "\n" +
+				"Output: " + str.substring(str.length() < msg_len ? 0 : str.length() - msg_len, str.length()) + "\n"
+				, "ssh");
+	        }
+	        else
+	        {
+				str = d.sendCommand2("apt-get upgrade" + " -y");
+				if (!(str == null))
+				{
+					SlackBot.sendMsg("Command: update all packages " + "\n" +
+							"Device: " + d.getName() + "\n" +
+							"Output: " + str.substring(str.length() < msg_len ? 0 : str.length() - msg_len, str.length()) + "\n"
+							, "ssh");
+				}
+
+	        }
+//			if(str.contains("Complete!"))
+//			{
+//				results[i] = true;
+//			}
+	        
+	        
+	    }
+
+		
+		
+		return "success";
+	};
+
+	@SuppressWarnings("rawtypes")
+	public static Route installPackAll= (Request request, Response response) -> {
+		Device d;
+	    Iterator it =  Server.device_manager.devices_map.entrySet().iterator();
+	    boolean[] results = new boolean[Server.device_manager.devices_map.size()];
+	    String str = "";
+	    int i = 0;
+	    String packName = request.params(":pack");
+	    
+	    
+	    while (it.hasNext()) {
+	        Map.Entry pair = (Map.Entry)it.next();
+	        d = Server.device_manager.devices_map.get(pair.getKey());
+	        if(d.isCentos)
+	        {
+				str = d.sendCommand2("yum install " + packName + " -y");
+
+	        	if(str != null)
+	        	{
+					SlackBot.sendMsg("Command: install package " + "\n" +
+							"Device: " + d.getName() +  "\n" +
+							"Pack: " + packName + "\n" +
+							"Output: " + str.substring(str.length() < msg_len ? 0 : str.length() - msg_len, str.length()) + "\n"
+							, "ssh");
+	        	}
+
+
+	        }
+	        else
+	        {
+				str = d.sendCommand2("apt-get install " + packName + " -y");
+				if (!(str == null))
+				{
+					SlackBot.sendMsg("Command: install package " + "\n" +
+							"Device: " + d.getName() + "\n" +
+							"Pack: " + packName + "\n" +
+							"Output: " + str.substring(str.length() < msg_len ? 0 : str.length() - msg_len, str.length()) + "\n"
+							, "ssh");
+				}
+
+	        }
+
+	        
+	    }
+
+		return "success";
+	};
+
+	public static Route removePackAll= (Request request, Response response) -> {
+		Device d;
+	    Iterator it =  Server.device_manager.devices_map.entrySet().iterator();
+	    boolean[] results = new boolean[Server.device_manager.devices_map.size()];
+	    String str = "";
+	    int i = 0;
+	    String packName = request.params(":pack");
+	    
+	    
+	    while (it.hasNext()) {
+	        Map.Entry pair = (Map.Entry)it.next();
+	        d = Server.device_manager.devices_map.get(pair.getKey());
+	        if(d.isCentos)
+	        {
+				str = d.sendCommand2("yum remove " + packName + " -y");
+
+	        	if(str != null)
+	        	{
+					SlackBot.sendMsg("Command: remove package " + "\n" +
+							"Device: " + d.getName() +  "\n" +
+							"Pack: " + packName + "\n" +
+							"Output: " + str.substring(str.length() < msg_len ? 0 : str.length() - msg_len, str.length()) + "\n"
+							, "ssh");
+	        	}
+
+
+	        }
+	        else
+	        {
+				str = d.sendCommand2("apt-get purge " + packName + " -y");
+				if (!(str == null))
+				{
+					SlackBot.sendMsg("Command: remove package " + "\n" +
+							"Device: " + d.getName() + "\n" +
+							"Pack: " + packName + "\n" +
+							"Output: " + str.substring(str.length() < msg_len ? 0 : str.length() - msg_len, str.length()) + "\n"
+							, "ssh");
+				}
+
+	        }
+
+	        
+	    }
+
+		return "success";
+	};
 
 }

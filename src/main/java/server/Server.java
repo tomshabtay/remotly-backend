@@ -45,6 +45,9 @@ public class Server {
 		get("ssh/:name/updateall", SSHControllers.updateAll);
 		get("ssh/:name/remove/:pack", SSHControllers.removePack);
 		get("ssh/:name/install/:pack", SSHControllers.installPack);
+		get("ssh/updateall", SSHControllers.installAllPacks);
+		get("ssh/update-all/:pack", SSHControllers.installPackAll);
+		get("ssh/remove-all/:pack", SSHControllers.removePackAll);
 
 		get("ssh/:name/update/:pack", SSHControllers.updatePackage);
 		get("ssh/test/:name", SSHControllers.sshTest);
