@@ -1,6 +1,7 @@
 package sparkexample;
 
 import server.Server;
+import slack.SlackBot;
 
 public class Hello {
 

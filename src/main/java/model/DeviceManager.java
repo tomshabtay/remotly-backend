@@ -8,6 +8,8 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import server.Server;
+
 public class DeviceManager {
 	public HashMap<String, Device> devices_map;
 	
@@ -21,8 +23,8 @@ public class DeviceManager {
 	public void addDevice(String name, String ip, String username, String password){
 		Device device = new Device(name, ip, username, password);
 		devices_map.put(device.name, device);
-		//saveHashMap();
-		System.out.println("Device added.");
+		
+
 		
 	}
 	public void addDummyData()

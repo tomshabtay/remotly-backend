@@ -5,12 +5,15 @@ import org.w3c.dom.NameList;
 import model.Device;
 import model.Pack;
 import server.Server;
+import slack.SlackBot;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import ssh.SSHManager;
 
 public class SSHControllers {
+	
+	static public final int msg_len = 250;
 	
 	public static Route sshTest = (Request request, Response response) -> {
 		Device d = Server.device_manager.getDevice(request.params(":name"));
@@ -23,8 +26,13 @@ public class SSHControllers {
 	};
 	
 	public static Route sshRunCommand = (Request request, Response response) -> {
+		//TODO
 		Device d = Server.device_manager.getDevice(request.params(":name"));
 		String str = d.sendCommand2(request.params(":command"));
+		SlackBot.sendMsg("Command: " + request.params(":command") + "\n" +
+						"Device: " + request.params(":name") + "\n" +
+						"Output: " + str.substring(str.length() < msg_len ? 0 : str.length() - msg_len, str.length()) + "\n"
+						, "ssh");
 		System.out.println(str);
 		return str;
 		
@@ -77,6 +85,11 @@ public class SSHControllers {
 		{
 			res = d.sendCommand2("apt-get upgrade " + str + " -y");
 		}
+		
+		SlackBot.sendMsg("Command: update package " + request.params(":pack") + "\n" +
+				"Device: " + request.params(":name") + "\n" +
+				"Output: " + res + "\n"
+				, "ssh");
 		return res;
 	};
 
@@ -91,6 +104,12 @@ public class SSHControllers {
 		{
 			str = d.sendCommand2("apt-get upgrade" + " -y");
 		}
+		
+		SlackBot.sendMsg("Command: update all packages " + "\n" +
+				"Device: " + request.params(":name") + "\n" +
+				"Output: " + str.substring(str.length() < msg_len ? 0 : str.length() - msg_len, str.length()) + "\n"
+				, "ssh");
+		
 		//return "Run Command";
 		return str;
 	};
@@ -109,6 +128,11 @@ public class SSHControllers {
 			str = d.sendCommand2("apt-get purge " + packName + " -y");
 		}
 		
+		SlackBot.sendMsg("Command: remove pack "+ request.params(":pack") + "\n" +
+				"Device: " + request.params(":name") + "\n" +
+				"Output: " + str.substring(str.length() < msg_len ? 0 : str.length() - msg_len, str.length()) + "\n"
+				, "ssh");
+		
 		//return "Run Command";
 		return str;
 	};
@@ -126,6 +150,12 @@ public class SSHControllers {
 		{
 			str = d.sendCommand2("apt-get install " + packName + " -y");
 		}
+		
+		SlackBot.sendMsg("Command: install pack "+ request.params(":pack") + "\n" +
+				"Device: " + request.params(":name") + "\n" +
+				"Output: " + str.substring(str.length() < msg_len ? 0 : str.length() - msg_len, str.length()) + "\n"
+				, "ssh");
+		
 		
 		//return "Run Command";
 		return str;

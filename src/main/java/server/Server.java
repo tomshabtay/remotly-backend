@@ -10,6 +10,7 @@ import controllers.SSHControllers;
 import controllers.ServerControllers;
 import model.Device;
 import model.DeviceManager;
+import slack.SlackBot;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -19,13 +20,17 @@ public class Server {
 
 	// The Model
 	public static DeviceManager device_manager = new DeviceManager();
+	public SlackBot slackBot = new SlackBot();
 
 	// Constructor
 	public Server() {
+
+		SlackBot.sendMsg("Server Starting...", "general");
 		setRoutes();
 	}
 
 	public void setRoutes() {
+		SlackBot.sendMsg("Setting Routes", "general");
 
 		// Devices Managment
 		get("devices/add/:query", DevicesControllers.addDevice);
@@ -54,6 +59,7 @@ public class Server {
 	
 	public static void stopServer() 
 	{
+		SlackBot.sendMsg("Server Stoped", "general");
 		stop();
 	}
 	
