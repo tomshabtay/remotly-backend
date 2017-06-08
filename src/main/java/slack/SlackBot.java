@@ -31,10 +31,11 @@ public class SlackBot {
 		 	
 		 	String timeStr = "*(" + String.valueOf(ZonedDateTime.now().getHour()) + ":" + String.valueOf(ZonedDateTime.now().getMinute()) + ")* ";
 		 	timeStr = "*(" + LocalDateTime.now().toString() + ")* \n";
+		 	timeStr = timeStr.replace("T", " ");
 
 		 	//channelStr = "general";
 	    	SlackChannel channel = session.findChannelByName(channelStr); //make sure bot is a member of the channel.
-	    	session.sendMessage(channel, timeStr + msg );
+	    	session.sendMessage(channel, timeStr + ">>>" + msg );
 	 }
 	 
 

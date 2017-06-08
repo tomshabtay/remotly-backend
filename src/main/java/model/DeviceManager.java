@@ -29,31 +29,15 @@ public class DeviceManager {
 	}
 	public void addDummyData()
 	{
-		Pack pack = new Pack("vim","1.0");
-		Pack pack2 = new Pack("emacs","1.2");
-		Pack pack3 = new Pack("ubuntu", "12.4");
-		Pack pack4 = new Pack("centos", "7.0");
-		Pack pack5 = new Pack("windows", "XP");
-		
 		Device d1 = new Device("centos", "10.0.0.29", "root", "a");
-		d1.packages.add(pack);
-		d1.packages.add(pack2);
-		d1.packages.add(pack3);
-		Device d2 = new Device("windowz", "192.168.1.1", "root", "a");
-		d2.packages.add(pack4);
-		d2.packages.add(pack5);
-		d2.packages.add(pack2);
-		Device d3 = new Device("nezeros", "111.111.111.111", "root", "a");
-		d3.packages.add(pack2);
-		d3.packages.add(pack);
-		d3.packages.add(pack4);
+
+		Device d2 = new Device("centostwo","10.0.0.30", "root", "a");
+
 		d1.setCentos(true);
-		d2.setCentos(false);
-		d3.setCentos(false);
+		d2.setCentos(true);
 		
 		devices_map.put(d1.name, d1);
 		devices_map.put(d2.name, d2);
-		devices_map.put(d3.name, d3);
 
 	}
 	
